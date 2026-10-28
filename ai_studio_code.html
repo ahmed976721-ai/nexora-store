@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexora - Shop Smarter. Live Better.</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'sans-serif'],
+                    },
+                    colors: {
+                        brandDark: '#1a202c',
+                        brandBlue: '#0f172a',
+                        brandPink: '#fb7185',
+                        brandPeach: '#fee2e2',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f3f4f6; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .line-through-gray { text-decoration-line: line-through; color: #9ca3af; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Top Bar -->
+    <div class="bg-gray-800 text-white text-xs py-2 px-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <i class="fas fa-truck text-gray-300"></i>
+            <span>সারা দেশে ডেলিভারি</span>
+            <span class="text-gray-500">|</span>
+            <span>নিরাপদ পেমেন্ট</span>
+            <span class="text-gray-500">|</span>
+            <span>100% অরিজিনাল প্রোডাক্ট</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="#" class="hover:text-gray-300"><i class="fas fa-user mr-1"></i> Login / Register</a>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white py-4 px-4 md:px-8 shadow-sm flex flex-wrap justify-between items-center gap-4 sticky top-0 z-50">
+        <!-- Logo -->
+        <div class="flex flex-col">
+            <h1 class="text-3xl font-bold tracking-tight text-brandBlue">Nexora</h1>
+            <span class="text-[10px] text-gray-500 tracking-wider">Shop Smarter . Live Better</span>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="flex-grow max-w-2xl w-full order-3 md:order-none relative">
+            <input type="text" id="searchInput" placeholder="আপনি কি খুঁজছেন? (পণ্যের নাম, ক্যাটাগরি...)" 
+                   class="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-brandBlue text-sm">
+            <button onclick="searchProducts()" class="absolute right-0 top-0 bottom-0 bg-brandBlue text-white px-4 rounded-r-md">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+
+        <!-- Icons -->
+        <div class="flex items-center space-x-6 order-2 md:order-none">
+            <div class="flex flex-col items-center cursor-pointer">
+                <i class="far fa-user text-xl"></i>
+                <span class="text-xs font-semibold mt-1">অ্যাকাউন্ট</span>
+            </div>
+            <div class="flex flex-col items-center cursor-pointer relative" onclick="toggleCartModal()">
+                <div class="relative">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span id="cart-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">0</span>
+                </div>
+                <span class="text-xs font-semibold mt-1">কার্ট</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200 px-4 md:px-8 py-2 overflow-x-auto hide-scrollbar">
+        <div class="flex items-center space-x-6 min-w-max text-sm font-medium">
+            <button class="bg-brandBlue text-white px-4 py-2 rounded-md flex items-center space-x-2">
+                <i class="fas fa-bars"></i>
+                <span>All Categories</span>
+            </button>
+            <a href="#" class="flex items-center space-x-1 hover:text-brandPink transition"><i class="fas fa-male text-gray-500"></i><span>ছেলেদের ফ্যাশন</span></a>
+            <a href="#" class="flex items-center space-x-1 hover:text-brandPink transition"><i class="fas fa-female text-gray-500"></i><span>মেয়েদের ফ্যাশন</span></a>
+            <a href="#" class="flex items-center space-x-1 hover:text-brandPink transition"><i class="fas fa-baby text-gray-500"></i><span>বেবি ফ্যাশন</span></a>
+            <a href="#" class="flex items-center space-x-1 hover:text-brandPink transition"><i class="fas fa-home text-gray-500"></i><span>হোম ডেকোর</span></a>
+            <a href="#" class="flex items-center space-x-1 hover:text-brandPink transition"><i class="fas fa-magic text-gray-500"></i><span>কসমেটিক</span></a>
+            <a href="#" class="flex items-center space-x-1 hover:text-brandPink transition"><i class="fas fa-headphones text-gray-500"></i><span>ইলেকট্রনিক & গ্যাজেট</span></a>
+            <a href="#" class="flex items-center space-x-1 hover:text-brandPink transition"><i class="fas fa-shopping-bag text-gray-500"></i><span>ব্যাগ কালেকশন</span></a>
+            <a href="#" class="flex items-center space-x-1 hover:text-brandPink transition"><i class="fas fa-heart text-gray-500"></i><span>কাপল কম্বো সেট</span></a>
+            <a href="#" class="flex items-center space-x-1 hover:text-brandPink transition"><i class="fas fa-snowflake text-gray-500"></i><span>সিজনাল প্রোডাক্ট</span></a>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <div class="max-w-7xl mx-auto mt-4 px-4">
+        <div class="bg-gradient-to-r from-orange-100 to-pink-100 rounded-lg p-6 md:p-12 flex flex-col md:flex-row items-center justify-between relative overflow-hidden">
+            <div class="z-10 max-w-lg mb-6 md:mb-0">
+                <h2 class="text-5xl font-extrabold text-brandBlue mb-2">Nexora</h2>
+                <h3 class="text-xl font-semibold mb-2">Your One Stop Shopping Destination</h3>
+                <p class="text-gray-600 mb-6 text-sm">স্টাইল, সৌন্দর্য, আধুনিক জীবন - সবকিছু এখন এক জায়গায়!</p>
+                <button class="bg-pink-500 text-white px-6 py-2 rounded-full font-semibold hover:bg-pink-600 transition shadow-lg">Shop Now &rarr;</button>
+            </div>
+            
+            <div class="hidden md:block absolute right-[25%] top-1/2 transform -translate-y-1/2">
+                <!-- Abstract Representation of Products in Hero -->
+                <div class="flex gap-2 items-end opacity-90">
+                    <div class="w-24 h-32 bg-gray-200 rounded shadow-md border-2 border-white flex items-center justify-center text-gray-400"><i class="fas fa-tshirt fa-2x"></i></div>
+                    <div class="w-32 h-40 bg-orange-200 rounded shadow-lg border-2 border-white flex flex-col items-center justify-center relative -mt-6">
+                        <span class="text-xl font-bold text-brandBlue mb-2">Nexora</span>
+                        <i class="fas fa-shopping-bag fa-3x text-orange-400"></i>
+                    </div>
+                    <div class="w-20 h-24 bg-pink-200 rounded shadow-md border-2 border-white flex items-center justify-center text-pink-400"><i class="fas fa-pump-soap fa-2x"></i></div>
+                </div>
+            </div>
+
+            <div class="z-10 bg-white/60 backdrop-blur-sm p-4 rounded-lg flex flex-col space-y-4 text-sm font-medium border border-white/50">
+                <div class="flex items-center space-x-3"><i class="fas fa-truck text-xl w-6"></i><div><p>Fast Delivery</p><p class="text-xs text-gray-500 font-normal">সারা দেশে ডেলিভারি</p></div></div>
+                <div class="flex items-center space-x-3"><i class="fas fa-shield-alt text-xl w-6"></i><div><p>Secure Payment</p><p class="text-xs text-gray-500 font-normal">নিরাপদ পেমেন্ট</p></div></div>
+                <div class="flex items-center space-x-3"><i class="fas fa-check-circle text-xl w-6"></i><div><p>100% Original</p><p class="text-xs text-gray-500 font-normal">অরিজিনাল প্রোডাক্ট</p></div></div>
+                <div class="flex items-center space-x-3"><i class="fas fa-headset text-xl w-6"></i><div><p>24/7 Support</p><p class="text-xs text-gray-500 font-normal">সবসময় আপনার সাথে</p></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="max-w-7xl mx-auto mt-6 px-4 pb-12 flex flex-col lg:flex-row gap-6">
+        
+        <!-- Left Sidebar (Login) -->
+        <div class="w-full lg:w-1/4">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-brandBlue">Nexora</h2>
+                    <h3 class="text-sm font-semibold mt-1">Login to Nexora</h3>
+                    <p class="text-xs text-gray-500 mt-1">আপনার একাউন্ট প্রবেশ করুন</p>
+                </div>
+                <form class="space-y-4">
+                    <div class="relative">
+                        <i class="far fa-user absolute left-3 top-3 text-gray-400 text-sm"></i>
+                        <input type="text" placeholder="মোবাইল নাম্বার / ইমেইল" class="w-full pl-9 pr-3 py-2 border rounded text-sm focus:ring-brandBlue focus:border-brandBlue">
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-3 top-3 text-gray-400 text-sm"></i>
+                        <input type="password" placeholder="পাসওয়ার্ড" class="w-full pl-9 pr-8 py-2 border rounded text-sm focus:ring-brandBlue focus:border-brandBlue">
+                        <i class="far fa-eye absolute right-3 top-3 text-gray-400 text-sm cursor-pointer"></i>
+                    </div>
+                    <button type="button" class="w-full bg-brandBlue text-white py-2 rounded text-sm font-medium hover:bg-gray-800 transition">Login</button>
+                    <div class="text-center mt-2">
+                        <a href="#" class="text-xs text-blue-500">পাসওয়ার্ড ভুলে গেছেন?</a>
+                    </div>
+                    
+                    <div class="flex items-center my-4">
+                        <div class="flex-grow border-t border-gray-200"></div>
+                        <span class="px-3 text-xs text-gray-400">অথবা</span>
+                        <div class="flex-grow border-t border-gray-200"></div>
+                    </div>
+
+                    <button type="button" class="w-full border border-gray-300 text-gray-600 py-2 rounded text-sm flex items-center justify-center space-x-2 hover:bg-gray-50 transition">
+                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4" alt="Google">
+                        <span>Continue with Google</span>
+                    </button>
+                    <button type="button" class="w-full border border-gray-300 text-gray-600 py-2 rounded text-sm flex items-center justify-center space-x-2 hover:bg-gray-50 transition">
+                        <i class="fab fa-facebook text-blue-600"></i>
+                        <span>Continue with Facebook</span>
+                    </button>
+                    <div class="text-center mt-4 text-xs">
+                        নতুন একাউন্ট তৈরি করুন? <a href="#" class="text-blue-500 font-semibold">Register</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Center Area (Products) -->
+        <div class="w-full lg:w-2/4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">Featured Products</h3>
+                <a href="#" class="text-sm font-medium text-gray-600 hover:text-brandBlue">View All &rarr;</a>
+            </div>
+            
+            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Products will be injected here via JS -->
+            </div>
+
+            <!-- Features Banner Below Products -->
+            <div class="mt-8 bg-gray-50 border border-gray-200 rounded-lg p-4 flex flex-wrap justify-between items-center gap-4">
+                <div class="flex items-center space-x-3 w-[45%] md:w-auto">
+                    <i class="fas fa-truck text-2xl text-gray-600"></i>
+                    <div><p class="text-xs font-bold">ফ্রি ডেলিভারি *</p><p class="text-[10px] text-gray-500">সারা দেশে</p></div>
+                </div>
+                <div class="flex items-center space-x-3 w-[45%] md:w-auto">
+                    <i class="fas fa-shield-alt text-2xl text-gray-600"></i>
+                    <div><p class="text-xs font-bold">নিরাপদ পেমেন্ট</p><p class="text-[10px] text-gray-500">COD & Online</p></div>
+                </div>
+                <div class="flex items-center space-x-3 w-[45%] md:w-auto">
+                    <i class="fas fa-award text-2xl text-gray-600"></i>
+                    <div><p class="text-xs font-bold">100% অরিজিনাল</p><p class="text-[10px] text-gray-500">গ্যারান্টি সহ</p></div>
+                </div>
+                <div class="flex items-center space-x-3 w-[45%] md:w-auto">
+                    <i class="fas fa-headset text-2xl text-gray-600"></i>
+                    <div><p class="text-xs font-bold">24/7 সাপোর্ট</p><p class="text-[10px] text-gray-500">আমাদের সাথে যোগাযোগ করুন</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar (Checkout) -->
+        <div class="w-full lg:w-1/4">
+            <div class="bg-blue-50/50 rounded-lg shadow-sm border border-blue-100 p-5 sticky top-24">
+                <div class="flex items-center space-x-2 mb-4">
+                    <i class="fas fa-shopping-cart text-brandBlue"></i>
+                    <h2 class="text-lg font-bold text-brandBlue">অর্ডার করুন</h2>
+                </div>
+                <p class="text-xs text-gray-600 mb-4">সহজেই আপনার পছন্দের পণ্য অর্ডার করুন</p>
+                
+                <!-- Dynamic Cart Summary -->
+                <div id="checkout-cart-summary" class="mb-4 bg-white p-3 rounded border border-gray-200 text-sm hidden">
+                    <h4 class="font-bold border-b pb-2 mb-2">আপনার কার্ট</h4>
+                    <div id="checkout-cart-items" class="space-y-2 max-h-32 overflow-y-auto hide-scrollbar"></div>
+                    <div class="flex justify-between font-bold border-t pt-2 mt-2">
+                        <span>সাবটোটাল:</span>
+                        <span id="checkout-subtotal">৳ 0</span>
+                    </div>
+                </div>
+
+                <form id="checkoutForm" class="space-y-3" onsubmit="event.preventDefault(); placeOrder();">
+                    <div class="relative">
+                        <i class="far fa-user absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+                        <input type="text" id="customer-name" placeholder="আপনার নাম *" required class="w-full pl-8 pr-3 py-2 border rounded text-xs focus:ring-brandBlue focus:border-brandBlue bg-white">
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-phone-alt absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+                        <input type="tel" id="customer-phone" placeholder="মোবাইল নাম্বার *" required class="w-full pl-8 pr-3 py-2 border rounded text-xs focus:ring-brandBlue focus:border-brandBlue bg-white">
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-map-marker-alt absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+                        <textarea id="customer-address" placeholder="ঠিকানা (বিস্তারিত) *" required rows="2" class="w-full pl-8 pr-3 py-2 border rounded text-xs focus:ring-brandBlue focus:border-brandBlue bg-white"></textarea>
+                    </div>
+
+                    <!-- Delivery Options -->
+                    <div>
+                        <label class="text-xs font-semibold text-gray-700 block mb-1">ডেলিভারি এরিয়া *</label>
+                        <select id="delivery-area" onchange="calculateTotal()" class="w-full py-2 px-3 border rounded text-xs focus:ring-brandBlue bg-white">
+                            <option value="inside">ঢাকার ভেতরে (৳ ৮০)</option>
+                            <option value="outside">ঢাকার বাইরে (৳ ১২০)</option>
+                        </select>
+                    </div>
+
+                    <!-- Payment Options -->
+                    <div>
+                        <label class="text-xs font-semibold text-gray-700 block mb-1">পেমেন্ট মেথড *</label>
+                        <select id="payment-method" onchange="calculateTotal()" class="w-full py-2 px-3 border rounded text-xs focus:ring-brandBlue bg-white">
+                            <option value="cod">Cash on Delivery (+৳ ২০)</option>
+                            <option value="prepaid">bKash / Nagad (No extra fee)</option>
+                        </select>
+                    </div>
+
+                    <!-- Total Calculation -->
+                    <div class="bg-gray-100 p-3 rounded mt-2">
+                        <div class="flex justify-between text-xs mb-1"><span>কার্ট সাবটোটাল:</span> <span id="summary-subtotal">৳ 0</span></div>
+                        <div class="flex justify-between text-xs mb-1"><span>ডেলিভারি চার্জ:</span> <span id="summary-delivery">৳ 80</span></div>
+                        <div class="flex justify-between text-xs mb-1"><span>COD ফি:</span> <span id="summary-cod">৳ 20</span></div>
+                        <div class="flex justify-between text-sm font-bold border-t pt-1 mt-1 text-brandBlue">
+                            <span>সর্বমোট:</span> <span id="summary-total">৳ 100</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-brandBlue text-white py-2.5 rounded text-sm font-semibold flex justify-center items-center space-x-2 hover:bg-gray-800 transition shadow-md">
+                        <i class="fas fa-check-circle"></i>
+                        <span>অর্ডার কনফার্ম করুন</span>
+                    </button>
+                    
+                    <button type="button" onclick="openWhatsApp()" class="w-full bg-green-500 text-white py-2.5 rounded text-sm font-semibold flex justify-between px-4 items-center hover:bg-green-600 transition shadow-md">
+                        <div class="flex items-center space-x-2">
+                            <i class="fab fa-whatsapp text-lg"></i>
+                            <div class="text-left leading-tight">
+                                <span class="block text-xs">WhatsApp এ যোগাযোগ করুন</span>
+                                <span class="block text-[10px] font-normal">সরাসরি কথা বলুন</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right text-xs"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-brandBlue text-white pt-10 pb-4">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-sm">
+            <div>
+                <h2 class="text-2xl font-bold mb-2">Nexora</h2>
+                <p class="text-gray-400 text-xs">Shop Smarter . Live Better</p>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Quick Links</h4>
+                <ul class="space-y-2 text-gray-400 text-xs">
+                    <li><a href="#" class="hover:text-white">• হোম</a></li>
+                    <li><a href="#" class="hover:text-white">• আমাদের সম্পর্কে</a></li>
+                    <li><a href="#" class="hover:text-white">• যোগাযোগ</a></li>
+                    <li><a href="#" class="hover:text-white">• FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Customer Service</h4>
+                <ul class="space-y-2 text-gray-400 text-xs">
+                    <li><a href="#" class="hover:text-white">• অর্ডার ট্র্যাক করুন</a></li>
+                    <li><a href="#" class="hover:text-white">• রিটার্ন & রিফান্ড</a></li>
+                    <li><a href="#" class="hover:text-white">• শিপিং পলিসি</a></li>
+                    <li><a href="#" class="hover:text-white">• প্রাইভেসি পলিসি</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="mb-4">
+                    <h4 class="font-bold mb-2 inline-block mr-4">Follow Us</h4>
+                    <div class="inline-flex space-x-3 text-lg">
+                        <a href="#" class="text-blue-500"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-pink-500"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-red-500"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-black"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-2 text-xs">Download App (Coming Soon)</h4>
+                    <div class="flex space-x-2">
+                        <div class="bg-black border border-gray-600 p-1.5 rounded flex items-center space-x-2 cursor-pointer">
+                            <i class="fab fa-google-play text-xl"></i>
+                            <div class="leading-none text-[8px]">
+                                <span>GET IT ON</span><br><span class="text-[10px] font-bold">Google Play</span>
+                            </div>
+                        </div>
+                        <div class="bg-black border border-gray-600 p-1.5 rounded flex items-center space-x-2 cursor-pointer">
+                            <i class="fab fa-apple text-xl"></i>
+                            <div class="leading-none text-[8px]">
+                                <span>Download on the</span><br><span class="text-[10px] font-bold">App Store</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mx-4 pt-4 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
+            <p>© 2026 Nexora. All rights reserved.</p>
+            <p><i class="fas fa-lock"></i> Secure & Trusted Shopping Experience</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Data and Logic -->
+    <script>
+        // Sample Product Data matching screenshot requirements
+        const products = [
+            { id: 1, name: "Men's Casual Shirt", price: 850, oldPrice: 1200, discount: "20% OFF", image: "https://images.unsplash.com/photo-1596755094514-f87e32f85e23?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" },
+            { id: 2, name: "Women's Long Dress", price: 1250, oldPrice: 1600, discount: "31% OFF", image: "https://images.unsplash.com/photo-1515347619362-6712b7754b2a?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" },
+            { id: 3, name: "Baby Romper Set", price: 650, oldPrice: 900, discount: "28% OFF", image: "https://images.unsplash.com/photo-1519689680058-324335c77eba?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" },
+            { id: 4, name: "Wall Clock (Home Decor)", price: 1100, oldPrice: 1500, discount: "27% OFF", image: "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" },
+            { id: 5, name: "Makeup Kit", price: 1450, oldPrice: 2000, discount: "28% OFF", image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" },
+            { id: 6, name: "Smart Watch", price: 2350, oldPrice: 3500, discount: "33% OFF", image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('demoCart')) || [];
+
+        function renderProducts(productList) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+            
+            productList.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition relative group';
+                card.innerHTML = `
+                    <div class="relative h-48 bg-gray-100 flex justify-center items-center overflow-hidden">
+                        <img src="${product.image}" alt="${product.name}" class="object-cover w-full h-full group-hover:scale-105 transition duration-300">
+                        <button class="absolute top-2 right-2 bg-white rounded-full p-1.5 shadow text-gray-400 hover:text-red-500 z-10"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="text-sm font-semibold text-gray-800 truncate mb-1" title="${product.name}">${product.name}</h4>
+                        <div class="flex items-center space-x-2 text-xs mb-3">
+                            <span class="text-brandPink font-bold">৳ ${product.price}</span>
+                            <span class="line-through-gray">৳ ${product.oldPrice}</span>
+                            <span class="bg-red-500 text-white text-[9px] px-1 rounded font-bold">${product.discount}</span>
+                        </div>
+                        <button onclick="addToCart(${product.id})" class="w-full bg-brandBlue text-white py-1.5 rounded text-xs font-semibold flex justify-center items-center space-x-1 hover:bg-gray-800 transition">
+                            <i class="fas fa-shopping-cart text-[10px]"></i>
+                            <span>Add to Cart</span>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if(product) {
+                const existing = cart.find(item => item.id === productId);
+                if(existing) {
+                    existing.quantity += 1;
+                } else {
+                    cart.push({...product, quantity: 1});
+                }
+                saveCart();
+                updateUI();
+                alert(`${product.name} added to cart!`);
+            }
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            saveCart();
+            updateUI();
+        }
+
+        function saveCart() {
+            localStorage.setItem('demoCart', JSON.stringify(cart));
+        }
+
+        function getSubtotal() {
+            return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        }
+
+        function updateUI() {
+            // Update Badge
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-badge').innerText = totalItems;
+
+            // Update Checkout Summary
+            const summaryContainer = document.getElementById('checkout-cart-summary');
+            const itemsContainer = document.getElementById('checkout-cart-items');
+            
+            if(cart.length > 0) {
+                summaryContainer.classList.remove('hidden');
+                itemsContainer.innerHTML = cart.map(item => `
+                    <div class="flex justify-between items-center text-xs">
+                        <div class="truncate w-3/5" title="${item.name}">${item.name} (x${item.quantity})</div>
+                        <div class="w-1/5 text-right font-semibold">৳${item.price * item.quantity}</div>
+                        <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 ml-2"><i class="fas fa-times"></i></button>
+                    </div>
+                `).join('');
+                document.getElementById('checkout-subtotal').innerText = `৳ ${getSubtotal()}`;
+            } else {
+                summaryContainer.classList.add('hidden');
+            }
+
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const subtotal = getSubtotal();
+            const deliveryArea = document.getElementById('delivery-area').value;
+            const paymentMethod = document.getElementById('payment-method').value;
+
+            // Delivery Charge Logic
+            const deliveryCharge = deliveryArea === 'inside' ? 80 : 120;
+            
+            // COD Charge Logic
+            const codCharge = paymentMethod === 'cod' ? 20 : 0;
+
+            const total = subtotal + deliveryCharge + codCharge;
+
+            // Update DOM
+            document.getElementById('summary-subtotal').innerText = `৳ ${subtotal}`;
+            document.getElementById('summary-delivery').innerText = `৳ ${deliveryCharge}`;
+            document.getElementById('summary-cod').innerText = `৳ ${codCharge}`;
+            document.getElementById('summary-total').innerText = `৳ ${total}`;
+        }
+
+        function searchProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+            renderProducts(filtered);
+        }
+
+        function placeOrder() {
+            if(cart.length === 0) {
+                alert('আপনার কার্ট খালি! অনুগ্রহ করে পণ্য যোগ করুন।');
+                return;
+            }
+            const name = document.getElementById('customer-name').value;
+            alert(`ধন্যবাদ ${name}! আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে।`);
+            cart = [];
+            saveCart();
+            updateUI();
+            document.getElementById('checkoutForm').reset();
+            calculateTotal();
+        }
+
+        function openWhatsApp() {
+            // Configurable Phone Number
+            const phoneNumber = '8801XXXXXXXXX'; 
+            const message = encodeURIComponent('হ্যালো Nexora, আমি একটি পণ্য সম্পর্কে জানতে চাই।');
+            window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+        }
+
+        function toggleCartModal() {
+            // Scroll to checkout form on mobile or small screens when cart is clicked
+            document.getElementById('checkoutForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Search on Enter key
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                searchProducts();
+            }
+        });
+
+        // Initialize
+        renderProducts(products);
+        updateUI();
+
+    </script>
+</body>
+</html>
